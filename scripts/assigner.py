@@ -122,11 +122,11 @@ def node():
                 information_gain = infoGain[ip]
                 if (norm(robots[ir].getPosition()-centroids[ip]) <= hysteresis_radius):
                     information_gain *= hysteresis_gain
-				if not (any(np.array_equal(centroids[ip], x) for x in BeenThere)):
-                	revenue = information_gain*info_multiplier-cost
-                	revenue_record.append(revenue)
-                	centroid_record.append(centroids[ip])
-                	id_record.append(ir)
+                if not (any(np.array_equal(centroids[ip], x) for x in BeenThere)):
+                    revenue = information_gain*info_multiplier-cost
+                    revenue_record.append(revenue)
+                    centroid_record.append(centroids[ip])
+                    id_record.append(ir)
 
         if len(na) < 1:
             revenue_record = []
@@ -143,11 +143,11 @@ def node():
                     if ((norm(centroids[ip]-robots[ir].assigned_point)) < hysteresis_radius):
                         information_gain = informationGain(
                             mapData, [centroids[ip][0], centroids[ip][1]], info_radius)*hysteresis_gain
-					if not (any(np.array_equal(centroids[ip], x) for x in BeenThere)):
-                    	revenue = information_gain*info_multiplier-cost
-                    	revenue_record.append(revenue)
-                    	centroid_record.append(centroids[ip])
-                    	id_record.append(ir)
+                    if not (any(np.array_equal(centroids[ip], x) for x in BeenThere)):
+                        revenue = information_gain*info_multiplier-cost
+                        revenue_record.append(revenue)
+                        centroid_record.append(centroids[ip])
+                        id_record.append(ir)
 
         rospy.loginfo("revenue record: "+str(revenue_record))
         rospy.loginfo("centroid record: "+str(centroid_record))
@@ -161,14 +161,14 @@ def node():
             rospy.loginfo(namespace+str(namespace_init_count +
                                         id_record[winner_id])+"  assigned to  "+str(centroid_record[winner_id]))
             rospy.sleep(delay_after_assignement)
-		else:
-			if (Count>3):
-				rospy.logerr("ClEAR Been THERE")
-				robots[0].sendGoal(np.array([0.0,0.0]))
-				rospy.logerr("Recenter\n")
-				BeenThere=[]
-				Count=0
-			Count+=1
+        else:
+            if (Count > 3):
+                rospy.logerr("ClEAR Been THERE")
+                robots[0].sendGoal(np.array([0.0, 0.0]))
+                rospy.logerr("Recenter\n")
+                BeenThere = []
+                Count = 0
+            Count += 1
 # -------------------------------------------------------------------------
         rate.sleep()
 # -------------------------------------------------------------------------
