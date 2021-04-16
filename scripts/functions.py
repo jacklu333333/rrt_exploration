@@ -43,7 +43,7 @@ class robot:
         robot.goal.target_pose.header.frame_id = self.global_frame
         robot.goal.target_pose.header.stamp = rospy.Time.now()
 
-        rospy.wait_for_service(self.name+self.plan_service)
+        # rospy.wait_for_service(self.name+self.plan_service)
         self.make_plan = rospy.ServiceProxy(
             self.name+self.plan_service, GetPlan)
         robot.start.header.frame_id = self.global_frame
