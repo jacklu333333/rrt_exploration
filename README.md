@@ -205,7 +205,10 @@ This node recieve target exploration goals, which are the filtered frontier poin
 The assigner node does not publish anything. It sends the assinged point to the ```move_base_node``` using Actionlib (the assigner node is an actionlib client to the move_base_node actionlib server).
 
 
-
+---------------------------------------------------------
+add around 
+add Beenthere
+add drop Beenthere
 
 
 

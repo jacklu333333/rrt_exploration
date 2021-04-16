@@ -66,6 +66,7 @@ class robot:
         robot.goal.target_pose.pose.position.y = point[1]
         robot.goal.target_pose.pose.orientation.w = 1.0
         self.client.send_goal(robot.goal)
+        wait = self.client.wait_for_result()
         self.assigned_point = array(point)
 
     def cancelGoal(self):
