@@ -88,7 +88,7 @@ def node():
 # -------------------------------------------------------------------------
     while not rospy.is_shutdown():
         centroids = copy(frontiers)
-		centroids = np.around(centroids, 1)
+        centroids = np.around(centroids, 1)
 # -------------------------------------------------------------------------
 # Get information gain for each frontier point
         infoGain = []
