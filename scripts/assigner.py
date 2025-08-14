@@ -157,17 +157,23 @@ def node():
         if (len(id_record) > 0):
             winner_id = revenue_record.index(max(revenue_record))
             robots[id_record[winner_id]].sendGoal(centroid_record[winner_id])
-            BeenThere.append(centroid_record[winner_id])
+            # BeenThere.append(centroid_record[winner_id])
             rospy.loginfo(namespace+str(namespace_init_count +
                                         id_record[winner_id])+"  assigned to  "+str(centroid_record[winner_id]))
             rospy.sleep(delay_after_assignement)
         else:
+            # if BeenThere == []:
+            #     robots[0].sendGoal(np.array([0.0, 0.0]))
+            #     rospy.logerr("Recenter\n")
+            #     exit()
+
             if (Count > 3):
                 rospy.logerr("ClEAR Been THERE")
                 robots[0].sendGoal(np.array([0.0, 0.0]))
                 rospy.logerr("Recenter\n")
                 BeenThere = []
                 Count = 0
+
             Count += 1
 # -------------------------------------------------------------------------
         rate.sleep()

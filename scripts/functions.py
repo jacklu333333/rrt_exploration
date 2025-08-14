@@ -8,6 +8,7 @@ from geometry_msgs.msg import PoseStamped
 from numpy import floor
 from numpy.linalg import norm
 from numpy import inf
+import math
 # ________________________________________________________________________________
 
 
@@ -15,8 +16,10 @@ class robot:
     goal = MoveBaseGoal()
     start = PoseStamped()
     end = PoseStamped()
+    poslistener = tf.TransformListener()
 
     def __init__(self, name):
+        rospy.init_node('tf_listener')
         self.assigned_point = []
         self.name = name
         self.global_frame = rospy.get_param('~global_frame', '/map')
@@ -61,12 +64,29 @@ class robot:
         self.position = array([trans[0], trans[1]])
         return self.position
 
+    def getOrientation(self, point):
+        (curTrans, curRot) = self.poslistener.lookupTransform(
+            '/map', '/base_link', rospy.Time(0))
+        vec = [g-c for c, g in zip(curTrans, point)]
+
+        [roll, pitch, yaw] = [0, 0, math.atan(vec[1]/vec[0])]
+        quaternion = tf.transformations.quaternion_from_euler(roll, pitch, yaw)
+        return quaternion
+
     def sendGoal(self, point):
+        # position
         robot.goal.target_pose.pose.position.x = point[0]
         robot.goal.target_pose.pose.position.y = point[1]
-        robot.goal.target_pose.pose.orientation.w = 1.0
+
+        # orientation
+        quaternion = robot.getOrientation(point)
+        robot.goal.target_pose.pose.orientation.x = quaternion[0]
+        robot.goal.target_pose.pose.orientation.y = quaternion[1]
+        robot.goal.target_pose.pose.orientation.z = quaternion[2]
+        robot.goal.target_pose.pose.orientation.w = quaternion[3]
+
         self.client.send_goal(robot.goal)
-        wait = self.client.wait_for_result()
+        # wait = self.client.wait_for_result()
         self.assigned_point = array(point)
 
     def cancelGoal(self):
